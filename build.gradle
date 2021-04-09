@@ -1,22 +1,60 @@
-plugins {
-	id 'org.springframework.boot' version '2.4.4'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
+buildscript {
+    ext {
+        springBootVersion = '2.4.4'
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
 }
 
-group = 'knu.capston'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
-
-repositories {
-	mavenCentral()
+// manage all modules including rootProject
+allprojects {
+    group 'knu.capston'
+    version '0.0.1-SNAPSHOT'
 }
 
-dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+// manage all modules included in settings.gradle
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    sourceCompatibility = 11
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+//		Junit
+        testImplementation("org.junit.vintage:junit-vintage-engine") {
+            exclude group: "org.hamcrest", module: "hamcrest-core"
+        }
+    }
+
+    test {
+        useJUnitPlatform()
+        useJUnit()
+    }
 }
 
-test {
-	useJUnitPlatform()
+project(':api'){
+    dependencies {
+        compile project(':core')
+    }
+}
+
+project(':batch'){
+    dependencies {
+        compile project(':core')
+    }
 }

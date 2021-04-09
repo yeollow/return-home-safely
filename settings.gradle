@@ -1,1 +1,4 @@
 rootProject.name = 'return-home-safely'
+include 'api', 'batch', 'core'
+
+// named rootProject and subProjects managed by rootProject
