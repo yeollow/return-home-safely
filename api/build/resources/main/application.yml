@@ -1,0 +1,4 @@
+# default server port : 8080
+spring:
+  config:
+    use-legacy-processing: true
