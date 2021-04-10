@@ -47,13 +47,27 @@ subprojects {
     }
 }
 
+project(':core'){
+//   dependency management required for core module
+    dependencies {
+        implementation 'org.projectlombok:lombok:1.18.18'
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+
+//        h2
+        implementation 'com.h2database:h2'
+    }
+}
+
 project(':api'){
+//    dependency management required for api module
     dependencies {
         compile project(':core')
     }
 }
 
 project(':batch'){
+//    dependency management required for batch module
     dependencies {
         compile project(':core')
     }
