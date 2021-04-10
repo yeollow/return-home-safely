@@ -3,4 +3,4 @@ spring:
     active: prod
 
 server:
-  port: 8088
+  port: 8082
