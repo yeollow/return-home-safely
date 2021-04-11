@@ -12,9 +12,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-@Data @Builder
-@NoArgsConstructor @AllArgsConstructor
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User extends BaseTimeEntity {
+
     @Id
     @GeneratedValue
     @Column(name = "user_id")

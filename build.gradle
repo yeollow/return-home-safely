@@ -46,7 +46,7 @@ subprojects {
     }
 }
 
-project(':core'){
+project(':core') {
 //   dependency management required for core module
     dependencies {
         implementation 'org.projectlombok:lombok:1.18.18'
@@ -58,7 +58,7 @@ project(':core'){
     }
 }
 
-project(':api'){
+project(':api') {
 //    dependency management required for api module
     dependencies {
         compile project(':core')
@@ -68,13 +68,13 @@ project(':api'){
         compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.5.0'
     }
 
-    bootRun{
+    bootRun {
         String activeProfile = System.properties['spring.profiles.active']
         systemProperty "spring.profiles.active", activeProfile
     }
 }
 
-project(':batch'){
+project(':batch') {
 //    dependency management required for batch module
     dependencies {
         compile project(':core')
