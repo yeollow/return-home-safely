@@ -38,6 +38,11 @@ subprojects {
         testImplementation("org.junit.vintage:junit-vintage-engine") {
             exclude group: "org.hamcrest", module: "hamcrest-core"
         }
+
+        bootRun {
+            String activeProfile = System.properties['spring.profiles.active']
+            systemProperty "spring.profiles.active", activeProfile
+        }
     }
 
     test {
@@ -66,11 +71,6 @@ project(':api') {
 //        swagger
         compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.5.0'
         compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.5.0'
-    }
-
-    bootRun {
-        String activeProfile = System.properties['spring.profiles.active']
-        systemProperty "spring.profiles.active", activeProfile
     }
 }
 

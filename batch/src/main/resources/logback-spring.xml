@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="300 seconds">
+  <springProfile name="local">
+    <property resource="logback-local.properties"/>
+  </springProfile>
+  <springProfile name="dev">
+    <property resource="logback-dev.properties"/>
+  </springProfile>
+  <springProfile name="prod">
+    <property resource="logback-prod.properties"/>
+  </springProfile>
+
+  <springProperty scope="context" name="LOG_LEVEL" source="logging.level.root"/>
+
+  <property name="LOG_PATH" value="${log.config.path}"/>
+  <property name="LOG_FILE_NAME" value="${log.config.filename}"/>
+  <property name="ERR_LOG_FILE_NAME" value="${log.config.err_filename}"/>
+
+  <property name="LOG_PATTERN"
+    value="%-5level %d{yy-MM-dd HH:mm:ss}[%thread] [%logger{0}:%line] - %msg%n"/>
+
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>${LOG_PATTERN}</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+    <file>${LOG_PATH}/${LOG_FILE_NAME}.log</file>
+
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>${LOG_PATTERN}</pattern>
+    </encoder>
+
+    <rollingPolicy
+      class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+
+      <!-- .gz,.zip 등을 넣으면 자동 일자별 로그파일 압축 -->
+      <fileNamePattern>${LOG_PATH}/${LOG_FILE_NAME}.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+      <timeBasedFileNamingAndTriggeringPolicy
+        class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+
+        <maxFileSize>100MB</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+
+      <maxHistory>90</maxHistory>
+
+    </rollingPolicy>
+  </appender>
+
+  <appender name="Error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>error</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+    <file>${LOG_PATH}/${ERR_LOG_FILE_NAME}.log</file>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>${LOG_PATTERN}</pattern>
+    </encoder>
+
+    <rollingPolicy
+      class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+
+      <fileNamePattern>${LOG_PATH}/${ERR_LOG_FILE_NAME}.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+      <timeBasedFileNamingAndTriggeringPolicy
+        class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+
+        <maxFileSize>60MB</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+
+      <maxHistory>60</maxHistory>
+    </rollingPolicy>
+  </appender>
+
+  <root level="${LOG_LEVEL}">
+    <appender-ref ref="CONSOLE"/>
+    <appender-ref ref="FILE"/>
+    <appender-ref ref="Error"/>
+  </root>
+
+  <!-- 특정패키지 로깅레벨 설정 가능-->
+  <!--
+  <logger name="knu.capston.returnhomesafely" level="DEBUG" additivity="false">
+      <appender-ref ref="CONSOLE"/>
+      <appender-ref ref="FILE"/>
+      <appender-ref ref="Error"/>
+  </logger>
+  -->
+</configuration>
