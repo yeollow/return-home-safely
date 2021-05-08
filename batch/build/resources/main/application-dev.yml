@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active: dev
+
+# MySql datasource 연동 -> schema-mysql.sql파일을 검색하여 meta data table을 MySql환경에서 생성해야함.
+# Spring Batch의 metadata에는 이전에 어떤 Job이 실행되었는지, 성공한 Job은 어떤것들이 있고 실패한 Batch parameter는 무엇이 있는지,재실행 위치는 어디일지
+# 어떤 Job에 어떤 Step이 있고 성공한 Step과 실패한 Step은 어떤것들이 있는지에 대한 내용을 담고있다.
+
+#  datasource:
+#    hikari:
+#      jdbc-url: jdbc:mysql://localhost:3306/spring_batch   # localhost의 spring_batch database로 접근
+#      username: yeollow
+#      password: yeol1
+#      driver-class-name: com.mysql.jdbc.Driver
+
+server:
+  port: 7071
