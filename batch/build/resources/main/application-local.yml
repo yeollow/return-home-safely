@@ -1,0 +1,32 @@
+spring:
+  profiles:
+    active: local
+
+  datasource:
+    url: jdbc:h2:mem:batchTable
+    driver-class-name: org.h2.Driver
+    username: yeollow
+    password: yeollow
+
+  h2:
+    console:
+      enabled: true
+
+#kafka producer properties
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer    # org.apache.kafka.common.serialization package의 LongSerializer class
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer   #org.springframework.kafka.support.serializer package의 JsonSerializer class
+      client-id: KafkaItemWriter
+      acks: 1
+
+    # 이건 default고.. 만들수는 없나? 만들었다! default말고 CCTV는 CCTV, Police는 Police로 보낼수는 없나?
+    template:
+      default-topic: KafkaProducer
+
+
+server:
+  port: 7070
+
+

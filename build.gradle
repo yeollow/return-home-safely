@@ -31,8 +31,18 @@ subprojects {
     }
 
     dependencies {
+        //lombok
+        implementation 'org.projectlombok:lombok:1.18.18'
+        annotationProcessor 'org.projectlombok:lombok'
+
         implementation 'org.springframework.boot:spring-boot-starter'
         implementation 'org.springframework.boot:spring-boot-starter-web'
+
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+
+//        h2
+        implementation 'com.h2database:h2'
 
 //		Junit
         testImplementation("org.junit.vintage:junit-vintage-engine") {
@@ -52,14 +62,17 @@ subprojects {
 }
 
 project(':core') {
+//    Disabled bootJar
+    bootJar{
+        enabled = false
+    }
+    jar {
+        enabled = true
+    }
+
 //   dependency management required for core module
     dependencies {
-        implementation 'org.projectlombok:lombok:1.18.18'
-        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-        implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 
-//        h2
-        implementation 'com.h2database:h2'
     }
 }
 
@@ -78,5 +91,16 @@ project(':batch') {
 //    dependency management required for batch module
     dependencies {
         compile project(':core')
+
+//        spring batch
+        compile('org.springframework.boot:spring-boot-starter-batch')
+
+//        kafka
+        compile 'org.springframework.kafka:spring-kafka:2.7.0'
+
+        runtime('mysql:mysql-connector-java')
+
+        testCompile('org.springframework.boot:spring-boot-starter-test')
+        testCompile('org.springframework.batch:spring-batch-test')
     }
 }
