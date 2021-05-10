@@ -1,10 +1,10 @@
 package knu.capston.returnhomesafely.config.batchjob;
 
+import javax.persistence.EntityManagerFactory;
 import knu.capston.returnhomesafely.config.kafka.KafkaWriterConfig;
 import knu.capston.returnhomesafely.domain.CCTV;
 import knu.capston.returnhomesafely.processor.CCTVItemProcessor;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -20,18 +20,20 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.kafka.core.KafkaTemplate;
 
 @Configuration
-@AllArgsConstructor
-@NoArgsConstructor(force = true)
+@RequiredArgsConstructor
 public class CCTVBatchJobConfig {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
+    private final EntityManagerFactory entityManagerFactory;
+
     private final KafkaTemplate<Long, CCTV> template;
     private static final int chunkSize = 10;
 
+//    이렇게 되면 Job실행 순서가 어떻게 되는거지?
     @Bean
     public Job cctvJob() {
-        return this.jobBuilderFactory.get("cctvJob")
+        return jobBuilderFactory.get("cctvJob")
             .start(cctvScopeStep())
             .build();
     }
@@ -41,11 +43,12 @@ public class CCTVBatchJobConfig {
     public Step cctvScopeStep(
         /*@Value("#{jobParameters[requestDate]}") String requestDate*/) {
         assert stepBuilderFactory != null;
-        return this.stepBuilderFactory.get("cctvScopeStep")
+        return stepBuilderFactory.get("cctvScopeStep")
             .<CCTV, CCTV>chunk(chunkSize)
             .reader(cctvItemReader())
 //            .processor(cctvItemProcessor())
             .writer(cctvItemWriter())
+//            .writer(cctvJpaItemWriter())
             .build();
     }
 
@@ -76,4 +79,14 @@ public class CCTVBatchJobConfig {
     public KafkaItemWriter<Long, ? super CCTV> cctvItemWriter() {
         return new KafkaWriterConfig(template).cctvKafkaItemWriter();
     }
+
+    /*
+    @Bean
+    public JpaItemWriter<CCTV> cctvJpaItemWriter() {
+        JpaItemWriter<CCTV> jpaItemWriter = new JpaItemWriter<>();
+        jpaItemWriter.setEntityManagerFactory(entityManagerFactory);
+
+        return jpaItemWriter;
+    }
+    */
 }

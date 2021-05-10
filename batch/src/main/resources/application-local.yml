@@ -25,6 +25,5 @@ spring:
     template:
       default-topic: KafkaBatchProducer    # default topic.
 
-
 server:
   port: 7070
