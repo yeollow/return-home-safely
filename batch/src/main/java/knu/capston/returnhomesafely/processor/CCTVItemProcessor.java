@@ -9,7 +9,7 @@ import org.springframework.batch.item.ItemProcessor;
 public class CCTVItemProcessor implements ItemProcessor<CCTV, CCTV> {
 
     @Override
-    public CCTV process(@NotNull CCTV cctv) throws Exception {
+    public CCTV process(@NotNull CCTV cctv) {
         return cctv;
     }
 }

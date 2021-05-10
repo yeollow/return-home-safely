@@ -3,15 +3,14 @@ package knu.capston.returnhomesafely;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 
 @EnableBatchProcessing      //must declare to use Spring Batch functionalities
 @SpringBootApplication
 public class BatchApplication {
 
     public static void main(String[] args) {
-        System.exit(SpringApplication.exit(SpringApplication.run(BatchApplication.class,args)));
-//        SpringApplication.run(BatchApplication.class, args);
+//        System.exit(SpringApplication.exit(SpringApplication.run(BatchApplication.class,args)));
+        SpringApplication.run(BatchApplication.class, args);
     }
 }
 /*
