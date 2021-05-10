@@ -18,6 +18,7 @@ import org.springframework.batch.item.kafka.KafkaItemWriter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.kafka.core.KafkaTemplate;
 
 @Configuration
 @RequiredArgsConstructor
@@ -26,7 +27,7 @@ public class PoliceBatchJobConfig {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
-
+    private final KafkaTemplate<Long, Police> template;
     private static final int chunkSize = 10;
 
 
@@ -53,9 +54,8 @@ public class PoliceBatchJobConfig {
     public FlatFileItemReader<? extends Police> policeItemReader() {
         return new FlatFileItemReaderBuilder<Police>()
             .name("policeItemReader")
-            .resource(new ClassPathResource("police.csv"))            //csv파일 내용 변경
+            .resource(new ClassPathResource("police.csv"))
             .delimited()
-//            entity 변경
             .names("managementAgency", "policeOffice", "longitude", "latitude", "location")
             .fieldSetMapper(new BeanWrapperFieldSetMapper<>() {{
                 setTargetType(Police.class);
@@ -73,7 +73,7 @@ public class PoliceBatchJobConfig {
 //    XXXConfig에서 KafkaWriterConfig에서 필요한 Bean만 뽑아올 수 있음 -> KafkaWriterConfig에서 만든 Bean이 필요하다면, XXXConfig에서 private final 필드를 통해 해당 Bean을 생성자 주입으로 받아보자.
     @Bean
     public KafkaItemWriter<Long, ? super Police> policeItemWriter() {
-        return new KafkaWriterConfig().policeKafkaItemWriter();
+        return new KafkaWriterConfig(template).policeKafkaItemWriter();
     }
 
 }

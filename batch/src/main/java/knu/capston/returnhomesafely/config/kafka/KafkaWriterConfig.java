@@ -21,7 +21,7 @@ import org.springframework.kafka.core.ProducerFactory;
 @RequiredArgsConstructor
 public class KafkaWriterConfig {
 
-//    private final KafkaTemplate<Long, ?> template;
+    private final KafkaTemplate<Long, ?> template;
 
     @Bean
     public KafkaAdmin.NewTopics batchTopics() {
@@ -69,22 +69,22 @@ public class KafkaWriterConfig {
 
     @Bean
     public KafkaItemWriter<Long, ? super CCTV> cctvKafkaItemWriter() {
-        KafkaTemplate<Long, CCTV> cctvKafkaTemplate = (KafkaTemplate<Long, CCTV>) kafkaTemplate();
-        cctvKafkaTemplate.setDefaultTopic("CCTV");
+//        KafkaTemplate<Long, CCTV> cctvKafkaTemplate = (KafkaTemplate<Long, CCTV>) kafkaTemplate();
+        template.setDefaultTopic("CCTV");
 
         return new KafkaItemWriterBuilder<Long, CCTV>()
-            .kafkaTemplate(cctvKafkaTemplate)
+            .kafkaTemplate((KafkaTemplate<Long, CCTV>) template)
             .itemKeyMapper(CCTV::getId)
             .build();
     }
 
     @Bean
-    public KafkaItemWriter<Long, Police> policeKafkaItemWriter() {
-        KafkaTemplate<Long, Police> policeKafkaTemplate = (KafkaTemplate<Long, Police>) kafkaTemplate();
-        policeKafkaTemplate.setDefaultTopic("POLICE");
+    public KafkaItemWriter<Long, ? super Police> policeKafkaItemWriter() {
+//        KafkaTemplate<Long, Police> policeKafkaTemplate = (KafkaTemplate<Long, Police>) kafkaTemplate();
+        template.setDefaultTopic("POLICE");
 
         return new KafkaItemWriterBuilder<Long, Police>()
-            .kafkaTemplate(policeKafkaTemplate)
+            .kafkaTemplate((KafkaTemplate<Long, Police>) template)
             .itemKeyMapper(Police::getId)
             .build();
     }
