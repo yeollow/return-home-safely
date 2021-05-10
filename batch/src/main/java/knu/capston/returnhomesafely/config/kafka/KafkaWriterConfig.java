@@ -1,21 +1,16 @@
 package knu.capston.returnhomesafely.config.kafka;
 
-import java.util.Map;
 import knu.capston.returnhomesafely.domain.CCTV;
 import knu.capston.returnhomesafely.domain.Police;
 import lombok.RequiredArgsConstructor;
-import org.apache.kafka.clients.producer.ProducerConfig;
 import org.springframework.batch.item.kafka.KafkaItemWriter;
 import org.springframework.batch.item.kafka.builder.KafkaItemWriterBuilder;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.TopicBuilder;
-import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaAdmin.NewTopics;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.core.ProducerFactory;
 
 @Configuration
 @RequiredArgsConstructor
@@ -37,6 +32,8 @@ public class KafkaWriterConfig {
                 .build()
         );
     }
+// 얘네를 이미 application-local.yml에 kafka 관련 properties를 설정해놓은 다음, Application Context가 실행될 때 load를 해서 그런지, bean이 이미 creation되었다는 BeanCurrentlyIncreationException이 발생함.
+/*
 
     @Value(value = "${spring.kafka.producer.bootstrap-servers}")
     private String bootStrapServer;
@@ -66,6 +63,8 @@ public class KafkaWriterConfig {
     public KafkaTemplate<Long, ?> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
+*/
+
 
     @Bean
     public KafkaItemWriter<Long, ? super CCTV> cctvKafkaItemWriter() {

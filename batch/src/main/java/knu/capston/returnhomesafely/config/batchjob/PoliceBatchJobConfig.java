@@ -1,10 +1,10 @@
 package knu.capston.returnhomesafely.config.batchjob;
 
+import javax.persistence.EntityManagerFactory;
 import knu.capston.returnhomesafely.config.kafka.KafkaWriterConfig;
 import knu.capston.returnhomesafely.domain.Police;
 import knu.capston.returnhomesafely.processor.PoliceItemProcessor;
 
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -22,18 +22,19 @@ import org.springframework.kafka.core.KafkaTemplate;
 
 @Configuration
 @RequiredArgsConstructor
-@NoArgsConstructor(force = true)
 public class PoliceBatchJobConfig {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
+    private final EntityManagerFactory entityManagerFactory;
+
     private final KafkaTemplate<Long, Police> template;
     private static final int chunkSize = 10;
 
 
     @Bean
     public Job policeJob() {
-        return this.jobBuilderFactory.get("policeJob")
+        return jobBuilderFactory.get("policeJob")
             .start(policeScopeStep())
             .build();
     }
@@ -43,9 +44,11 @@ public class PoliceBatchJobConfig {
     public Step policeScopeStep(
         /*@Value("#{jobParameters[requestDate]}") String requestDate*/) {
         assert stepBuilderFactory != null;
-        return this.stepBuilderFactory.get("policeScopeStep")
+        return stepBuilderFactory.get("policeScopeStep")
             .<Police, Police>chunk(chunkSize)
             .reader(policeItemReader())
+//            .processor(policeItemProcessor())
+//            .writer(policeJpaItemWriter())
             .writer(policeItemWriter())
             .build();
     }
@@ -75,5 +78,13 @@ public class PoliceBatchJobConfig {
     public KafkaItemWriter<Long, ? super Police> policeItemWriter() {
         return new KafkaWriterConfig(template).policeKafkaItemWriter();
     }
+    /*
+    @Bean
+    public JpaItemWriter<Police> policeJpaItemWriter() {
+        JpaItemWriter<Police> jpaItemWriter = new JpaItemWriter<>();
+        jpaItemWriter.setEntityManagerFactory(entityManagerFactory);
 
+        return jpaItemWriter;
+    }
+    */
 }
