@@ -2,6 +2,7 @@ spring:
   profiles:
     active: local
 
+# h2 db
   datasource:
     url: jdbc:h2:mem:batchTable
     driver-class-name: org.h2.Driver
@@ -27,5 +28,3 @@ spring:
 
 server:
   port: 7070
-
-

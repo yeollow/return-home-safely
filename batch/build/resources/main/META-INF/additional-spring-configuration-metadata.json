@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "spring.kafka.producer.bootstrap-servers.key-serializer",
+      "type": "java.lang.String",
+      "description": "Description for spring.kafka.producer.bootstrap-servers.key-serializer."
+  }
+] }

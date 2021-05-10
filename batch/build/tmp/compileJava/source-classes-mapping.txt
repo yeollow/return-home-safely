@@ -2,15 +2,18 @@ knu/capston/returnhomesafely/processor/CCTVItemProcessor.java
  knu.capston.returnhomesafely.processor.CCTVItemProcessor
 knu/capston/returnhomesafely/domain/CCTV.java
  knu.capston.returnhomesafely.domain.CCTV
- knu.capston.returnhomesafely.domain.CCTV$CCTVBuilder
 knu/capston/returnhomesafely/processor/PoliceItemProcessor.java
  knu.capston.returnhomesafely.processor.PoliceItemProcessor
+knu/capston/returnhomesafely/config/kafka/KafkaWriterConfig.java
+ knu.capston.returnhomesafely.config.kafka.KafkaWriterConfig
+knu/capston/returnhomesafely/BatchApplication.java
+ knu.capston.returnhomesafely.BatchApplication
+knu/capston/returnhomesafely/config/BatchConfig.java
+ knu.capston.returnhomesafely.config.BatchConfig
 knu/capston/returnhomesafely/listener/JobCompletionNotificationListener.java
  knu.capston.returnhomesafely.listener.JobCompletionNotificationListener
 knu/capston/returnhomesafely/domain/Police.java
  knu.capston.returnhomesafely.domain.Police
-knu/capston/returnhomesafely/BatchApplication.java
- knu.capston.returnhomesafely.BatchApplication
-knu/capston/returnhomesafely/config/BatchConfiguration.java
- knu.capston.returnhomesafely.config.BatchConfiguration
- knu.capston.returnhomesafely.config.BatchConfiguration$1
+knu/capston/returnhomesafely/config/job/CCTVJobConfig.java
+ knu.capston.returnhomesafely.config.job.CCTVJobConfig
+ knu.capston.returnhomesafely.config.job.CCTVJobConfig$1
