@@ -2,7 +2,7 @@ spring:
   profiles:
     active: local
 
-# h2 db
+  # h2 db
   datasource:
     url: jdbc:h2:mem:batchTable
     driver-class-name: org.h2.Driver
@@ -13,14 +13,20 @@ spring:
     console:
       enabled: true
 
-#kafka producer properties
+  #kafka producer properties
   kafka:
     producer:
       bootstrap-servers: localhost:9092
       key-serializer: org.apache.kafka.common.serialization.LongSerializer    # LongSerializer class in org.apache.kafka.common.serialization package
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer   # JsonSerializer class in org.springframework.kafka.support.serializer package
-      client-id: KafkaItemWriter
       acks: 1
+
+    consumer:
+      bootstrap-servers: localhost:9092
+      enable-auto-commit: true
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer    # LongDeserializer class in org.apache.kafka.common.serialization package
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer   # JsonDeserializer class in org.springframework.kafka.support.serializer package
 
     template:
       default-topic: KafkaBatchProducer    # default topic.

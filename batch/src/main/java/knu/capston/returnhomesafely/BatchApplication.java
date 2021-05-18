@@ -9,8 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BatchApplication {
 
     public static void main(String[] args) {
-//        System.exit(SpringApplication.exit(SpringApplication.run(BatchApplication.class,args)));
-        SpringApplication.run(BatchApplication.class, args);
+        System.exit(SpringApplication.exit(SpringApplication.run(BatchApplication.class,args)));
+//        SpringApplication.run(BatchApplication.class, args);
     }
 }
 /*

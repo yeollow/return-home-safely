@@ -1,7 +1,6 @@
 package knu.capston.returnhomesafely.config.batchjob;
 
 import javax.persistence.EntityManagerFactory;
-import knu.capston.returnhomesafely.config.kafka.KafkaWriterConfig;
 import knu.capston.returnhomesafely.domain.CCTV;
 import knu.capston.returnhomesafely.processor.CCTVItemProcessor;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +13,7 @@ import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.kafka.KafkaItemWriter;
+import org.springframework.batch.item.kafka.builder.KafkaItemWriterBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -30,7 +30,6 @@ public class CCTVBatchJobConfig {
     private final KafkaTemplate<Long, CCTV> template;
     private static final int chunkSize = 10;
 
-//    이렇게 되면 Job실행 순서가 어떻게 되는거지?
     @Bean
     public Job cctvJob() {
         return jobBuilderFactory.get("cctvJob")
@@ -39,7 +38,7 @@ public class CCTVBatchJobConfig {
     }
 
     @Bean
-    @JobScope
+//    @JobScope
     public Step cctvScopeStep(
         /*@Value("#{jobParameters[requestDate]}") String requestDate*/) {
         assert stepBuilderFactory != null;
@@ -47,7 +46,7 @@ public class CCTVBatchJobConfig {
             .<CCTV, CCTV>chunk(chunkSize)
             .reader(cctvItemReader())
 //            .processor(cctvItemProcessor())
-            .writer(cctvItemWriter())
+            .writer(cctvKafkaItemWriter())
 //            .writer(cctvJpaItemWriter())
             .build();
     }
@@ -73,11 +72,14 @@ public class CCTVBatchJobConfig {
         return new CCTVItemProcessor();
     }
 
-//    XXXConfig에 해당하는 Bean을 생성할 필요는 없다. XXXConfig내부에 있는 policeKafkaItemWriter()가 반환하는 KafkaItemWriter<> 자료형의 Spring Bean만 뽑아오면 됨.
-//    XXXConfig에서 KafkaWriterConfig에서 필요한 Bean만 뽑아올 수 있음 -> KafkaWriterConfig에서 만든 Bean이 필요하다면, XXXConfig에서 private final 필드를 통해 해당 Bean을 생성자 주입으로 받아보자.
     @Bean
-    public KafkaItemWriter<Long, ? super CCTV> cctvItemWriter() {
-        return new KafkaWriterConfig(template).cctvKafkaItemWriter();
+    public KafkaItemWriter<Long, ? super CCTV> cctvKafkaItemWriter() {
+        template.setDefaultTopic("CCTV");
+
+        return new KafkaItemWriterBuilder<Long, CCTV>()
+            .kafkaTemplate(template)
+            .itemKeyMapper(CCTV::getId)
+            .build();
     }
 
     /*
