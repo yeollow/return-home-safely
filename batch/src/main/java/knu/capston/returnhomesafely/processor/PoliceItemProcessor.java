@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.batch.item.ItemProcessor;
 
 @Slf4j
-public class PoliceItemProcessor  implements ItemProcessor<Police,Police> {
+public class PoliceItemProcessor  implements ItemProcessor<Police, Police> {
 
     @Override
     public Police process(@NotNull Police police){

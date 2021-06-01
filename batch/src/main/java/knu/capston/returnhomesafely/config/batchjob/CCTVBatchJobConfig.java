@@ -7,9 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.kafka.KafkaItemWriter;
@@ -46,8 +46,8 @@ public class CCTVBatchJobConfig {
             .<CCTV, CCTV>chunk(chunkSize)
             .reader(cctvItemReader())
 //            .processor(cctvItemProcessor())
-            .writer(cctvKafkaItemWriter())
 //            .writer(cctvJpaItemWriter())
+            .writer(cctvKafkaItemWriter())
             .build();
     }
 
@@ -82,7 +82,7 @@ public class CCTVBatchJobConfig {
             .build();
     }
 
-    /*
+/*
     @Bean
     public JpaItemWriter<CCTV> cctvJpaItemWriter() {
         JpaItemWriter<CCTV> jpaItemWriter = new JpaItemWriter<>();
@@ -90,5 +90,6 @@ public class CCTVBatchJobConfig {
 
         return jpaItemWriter;
     }
-    */
+*/
+
 }

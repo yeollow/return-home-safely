@@ -9,7 +9,8 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.kafka.KafkaItemWriter;
@@ -30,18 +31,16 @@ public class PoliceBatchJobConfig {
     private final KafkaTemplate<Long, Police> template;
     private static final int chunkSize = 10;
 
+        @Bean
+        public Job policeJob() {
+            return jobBuilderFactory.get("policeJob")
+                .start(policeScopeStep())
+                .build();
+        }
 
     @Bean
-    public Job policeJob() {
-        return jobBuilderFactory.get("policeJob")
-            .start(policeScopeStep())
-            .build();
-    }
-
-    @Bean
-//    @JobScope
-    public Step policeScopeStep(
-        /*@Value("#{jobParameters[requestDate]}") String requestDate*/) {
+    //    @JobScope
+    public Step policeScopeStep() {
         assert stepBuilderFactory != null;
         return stepBuilderFactory.get("policeScopeStep")
             .<Police, Police>chunk(chunkSize)
@@ -53,7 +52,7 @@ public class PoliceBatchJobConfig {
     }
 
     @Bean
-    public FlatFileItemReader<? extends Police> policeItemReader() {
+    public ItemReader<? extends Police> policeItemReader() {
         return new FlatFileItemReaderBuilder<Police>()
             .name("policeItemReader")
             .resource(new ClassPathResource("police.csv"))
@@ -80,7 +79,7 @@ public class PoliceBatchJobConfig {
             .build();
     }
 
-    /*
+/*
     @Bean
     public JpaItemWriter<Police> policeJpaItemWriter() {
         JpaItemWriter<Police> jpaItemWriter = new JpaItemWriter<>();
@@ -88,5 +87,7 @@ public class PoliceBatchJobConfig {
 
         return jpaItemWriter;
     }
-    */
+*/
+
+
 }

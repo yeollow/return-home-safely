@@ -2,16 +2,16 @@ spring:
   profiles:
     active: local
 
-  # h2 db
+  jpa:
+    generate-ddl: true
+    database: mysql
+
+  # mysql datasource
   datasource:
-    url: jdbc:h2:mem:batchTable
-    driver-class-name: org.h2.Driver
+    url: jdbc:mysql://localhost:3306/return_home_safely?serverTimezone=UTC&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
     username: yeollow
     password: yeollow
-
-  h2:
-    console:
-      enabled: true
 
   #kafka producer properties
   kafka:
@@ -19,14 +19,17 @@ spring:
       bootstrap-servers: localhost:9092
       key-serializer: org.apache.kafka.common.serialization.LongSerializer    # LongSerializer class in org.apache.kafka.common.serialization package
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer   # JsonSerializer class in org.springframework.kafka.support.serializer package
+      client-id: return-home-safely-producer
       acks: 1
 
     consumer:
       bootstrap-servers: localhost:9092
-      enable-auto-commit: true
-      auto-offset-reset: latest
       key-deserializer: org.apache.kafka.common.serialization.LongDeserializer    # LongDeserializer class in org.apache.kafka.common.serialization package
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer   # JsonDeserializer class in org.springframework.kafka.support.serializer package
+      group-id: return-home-safely-consumer
+      enable-auto-commit: true
+      auto-offset-reset: latest
+
 
     template:
       default-topic: KafkaBatchProducer    # default topic.
