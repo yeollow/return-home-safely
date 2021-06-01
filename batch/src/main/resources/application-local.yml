@@ -2,16 +2,16 @@ spring:
   profiles:
     active: local
 
-  # h2 db
+  jpa:
+    generate-ddl: true
+    database: mysql
+
+  # mysql datasource
   datasource:
-    url: jdbc:h2:mem:batchTable
-    driver-class-name: org.h2.Driver
+    url: jdbc:mysql://localhost:3306/return_home_safely?serverTimezone=UTC&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
     username: yeollow
     password: yeollow
-
-  h2:
-    console:
-      enabled: true
 
   #kafka producer properties
   kafka:

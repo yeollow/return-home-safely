@@ -1,4 +1,19 @@
 spring:
+  # mysql - jpa
+  jpa:
+    generate-ddl: true
+    database: mysql
+
+  # mysql datasource
+  datasource:
+    url: jdbc:mysql://localhost:3306/return_home_safely?serverTimezone=UTC&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: yeollow
+    password: yeollow
+
+  session:
+    store-type: jdbc
+
   profiles:
     active: local
 
