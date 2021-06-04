@@ -1,11 +1,15 @@
 knu/capston/returnhomesafely/domain/CCTV.java
  knu.capston.returnhomesafely.domain.CCTV
+knu/capston/returnhomesafely/domain/precision.java
+ knu.capston.returnhomesafely.domain.precision
 knu/capston/returnhomesafely/time/BaseTimeEntity.java
  knu.capston.returnhomesafely.time.BaseTimeEntity
-knu/capston/returnhomesafely/domain/Police.java
- knu.capston.returnhomesafely.domain.Police
+knu/capston/returnhomesafely/GPS.java
+ knu.capston.returnhomesafely.GPS
 knu/capston/returnhomesafely/User.java
  knu.capston.returnhomesafely.User
  knu.capston.returnhomesafely.User$UserBuilder
-knu/capston/returnhomesafely/GPS.java
- knu.capston.returnhomesafely.GPS
+knu/capston/returnhomesafely/domain/Police.java
+ knu.capston.returnhomesafely.domain.Police
+knu/capston/returnhomesafely/domain/GeoHash.java
+ knu.capston.returnhomesafely.domain.GeoHash

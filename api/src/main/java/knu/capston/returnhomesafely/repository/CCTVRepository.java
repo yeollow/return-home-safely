@@ -2,7 +2,6 @@ package knu.capston.returnhomesafely.repository;
 
 import java.util.List;
 import javax.persistence.EntityManager;
-import knu.capston.returnhomesafely.GPS;
 import knu.capston.returnhomesafely.domain.CCTV;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
